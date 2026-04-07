@@ -1,4 +1,5 @@
 <img width="1919" height="1134" alt="image" src="https://github.com/user-attachments/assets/2bcfe9cb-c27f-4f1a-805d-6bcab2bd5d02" />
+
 ## The Three Heads of Cerberus
 1. Identity Layer: RO-PUF Gatekeeper
   - Module: ro_puf.v
