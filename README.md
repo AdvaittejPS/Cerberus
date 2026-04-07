@@ -15,6 +15,38 @@
   - Features a Linear Boundary Layer using arithmetic right-shifts (>>> 3) to eliminate high-frequency chattering without the silicon overhead of complex calculus.
   - Provides a forensic timeline of exactly how much drift or ramp a hacker injected into the system.
 
+## Performance Metrics
+1. Resilience Score ($R$)
+What it is: A measure of how well the system maintains normal operation while actively under a cyber-attack (specifically, the False Data Injection drift attack).
+How it's calculated: Resilience_Score = average_speed_under_attack / steady_state_baseline
+Result: 1.0277
+
+2. Detection Latency
+What it is: The time it takes for the SoC to realize it is under attack and pull the 'trigger' to swap from the physical sensor to the Digital Twin.
+How it's calculated: The MATLAB script counts the exact number of clock cycles between the moment the attack starts ($t=2.5s$) and the moment the absolute difference between y_reported and y_clean exceeds 1.0 rad/s.
+Result: 156.00 ms
+
+3. Computational Fidelity & RMSE
+What it is: The proof that the 32-bit hardware math isn't ruining the control theory.
+How it's calculated: You take the exact control voltage your FPGA generated (u_out), feed it into a "Golden" 64-bit floating-point MATLAB physics model, and compare the two outputs.
+Result: 95.64% (RMSE: 4.36 rad/s)
+
+4. Forensic Convergence Time ($T_c$)
+What it is: The speed of your "Tracker Head." It measures how fast your Sliding Mode Observer (SMO) locks onto the hacker's hidden signal.
+How it's calculated: The time it takes for your hardware estimate (alpha_hat) to get within 1.0 rad/s of the actual, theoretical attack signal (alpha_real).
+Result: 0.0005 seconds
+
+5. DoS Survivability (Maximum Deviation)
+What it is: The system's ability to survive a "Blackout" (Denial of Service), where the sensor wire is completely cut and reports 0 rad/s.
+How it's calculated: max(abs(dos_speeds - baseline_speed)) during the specific window where the physical sensor is dead.
+Result: 0.11 rad/s
+
+6. SMO Chattering Variance (Smoothness)
+What it is: The proof that your SMO doesn't vibrate out of control. SMOs that use a harsh sign() function that causes the hardware to oscillate violently up and down (chattering).
+Example: <img width="1600" height="728" alt="image" src="https://github.com/user-attachments/assets/642d0450-988a-48f6-b467-96bd3d03b1a7" />
+How it's calculated: Taking the mathematical variance of the step-to-step changes in alpha_hat (var(diff(alpha_hat))) during the attack window.
+Result: 0.000000
+
 ## Project Limitations and Future Scope
 1. PUF Reliability and Environmental Noise
   - Current Limitation: The current Ring Oscillator PUF implementation proves uniqueness (inter-chip variation) but assumes perfect reliability. In real-world deployments, RO-PUF frequencies are highly susceptible to thermal fluctuations and voltage degradation (aging), which can cause bit-flips in the response and lead to false authentication failures.
