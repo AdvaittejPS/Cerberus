@@ -15,6 +15,8 @@
   - Features a Linear Boundary Layer using arithmetic right-shifts (>>> 3) to eliminate high-frequency chattering without the silicon overhead of complex calculus.
   - Provides a forensic timeline of exactly how much drift or ramp a hacker injected into the system.
 
+[Control Systems Report- Cerberus.pdf](https://github.com/user-attachments/files/27272798/Control.Systems.Report-.Cerberus.pdf)
+
 ## Performance Metrics
 1. Resilience Score ($R$)
 What it is: A measure of how well the system maintains normal operation while actively under a cyber-attack (specifically, the False Data Injection drift attack).
